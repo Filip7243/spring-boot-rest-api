@@ -50,7 +50,7 @@ public class CourseService {
 
 
     public List<CourseDto> findCoursesByStudentId(Long id) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found!"));
+        Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found!"));
 
         List<Course> coursesByStudent = courseRepository.findCoursesByStudent(student);
 
