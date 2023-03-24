@@ -50,4 +50,12 @@ public class StudentController {
         return ResponseEntity
                 .ok("Student was successfully updated!");
     }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> deleteStudentWithId(@PathVariable("id") Long id) {
+        studentService.deleteStudentWithId(id);
+
+        return ResponseEntity
+                .ok("Student was successfully deleted!");
+    }
 }

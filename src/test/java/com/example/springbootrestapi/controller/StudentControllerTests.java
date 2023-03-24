@@ -68,7 +68,7 @@ public class StudentControllerTests {
     }
 
     @Test
-    public void shouldStatusCreated() throws Exception {
+    public void shouldReturnStatusCreated() throws Exception {
         StudentDto student = new StudentDto();
         student.setAlbumId("00000");
         student.setFirstName("test");
@@ -86,7 +86,7 @@ public class StudentControllerTests {
     }
 
     @Test
-    public void shouldReturnMessageThatUserWasUpdatedAnd() throws Exception {
+    public void shouldReturnMessageThatUserWasUpdatedAndStatusOk() throws Exception {
         StudentDto student = new StudentDto();
         student.setAlbumId("00000");
         student.setFirstName("test");
@@ -99,6 +99,16 @@ public class StudentControllerTests {
         mvc.perform(put(API_PATH + "/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(student)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldReturnMessageThatUserWasDeletedAndStatusOk() throws Exception {
+        Long id = anyLong();
+
+        studentService.deleteStudentWithId(id);
+
+        mvc.perform(delete(API_PATH + "/{id}", 1L))
                 .andExpect(status().isOk());
     }
 }
