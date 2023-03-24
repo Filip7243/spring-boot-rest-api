@@ -30,16 +30,24 @@ public class StudentController {
     }
 
     @PostMapping(value = "/")
-    public ResponseEntity<?> createUser(@RequestBody StudentDto studentDto) {
+    public ResponseEntity<?> createStudent(@RequestBody StudentDto studentDto) {
         StudentDto student = studentService.createStudent(studentDto);
 
         try {
             return ResponseEntity
                     .created(new URI("/api/students/"))
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body("CREATED");
+                    .body(student);
         } catch (URISyntaxException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<?> updateStudentWithId(@PathVariable("id") Long id, @RequestBody StudentDto studentDto) {
+        studentService.updateStudentWithId(id, studentDto);
+
+        return ResponseEntity
+                .ok("Student was successfully updated!");
     }
 }
