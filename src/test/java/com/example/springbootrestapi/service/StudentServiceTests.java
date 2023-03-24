@@ -16,8 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -50,6 +49,19 @@ public class StudentServiceTests {
     }
 
     @Test
+    public void throwsExceptionWhenUpdateNonExistingStudent() {
+        StudentDto student = new StudentDto();
+        Long anyId = anyLong();
+
+        when(studentRepository.findById(anyId)).thenReturn(Optional.empty());
+
+        RuntimeException ex =
+                assertThrows(RuntimeException.class, () -> studentService.updateStudentWithId(anyId, student));
+
+        assertEquals("Student not found", ex.getMessage());
+    }
+
+    @Test
     public void canDeleteStudent() {
         Student student = new Student();
         Long anyId = anyLong();
@@ -59,6 +71,18 @@ public class StudentServiceTests {
         studentService.deleteStudentWithId(anyId);
 
         verify(studentRepository).delete(student);
+    }
+
+    @Test
+    public void throwsExceptionWhenDeleteNonExistingStudent() {
+        Long anyId = anyLong();
+
+        when(studentRepository.findById(anyId)).thenReturn(Optional.empty());
+
+        RuntimeException ex =
+                assertThrows(RuntimeException.class, () -> studentService.deleteStudentWithId(anyId));
+
+        assertEquals("Student not found!", ex.getMessage());
     }
 
     @Test
@@ -74,6 +98,19 @@ public class StudentServiceTests {
 
         assertEquals(1, foundStudents.size());
     }
+
+    @Test
+    public void throwsExceptionWhenFindStudentByNonExistingCourseId() {
+        Long anyId = anyLong();
+
+        when(courseRepository.findById(anyId)).thenReturn(Optional.empty());
+
+        RuntimeException ex =
+                assertThrows(RuntimeException.class, () -> studentService.findStudentsByCourseId(anyId));
+
+        assertEquals("Course not found!", ex.getMessage());
+    }
+
     @Test
     public void canFindStudentsWithoutCourses() {
         Student student = new Student();
