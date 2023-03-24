@@ -85,7 +85,7 @@ public class StudentControllerTests {
     }
 
     @Test
-    public void shouldReturnMessageThatUserWasUpdatedAndStatusOk() throws Exception {
+    public void shouldReturnMessageThatStudentWasUpdatedAndStatusOk() throws Exception {
         Long id = anyLong();
 
         studentService.updateStudentWithId(id, eq(student));
@@ -97,7 +97,7 @@ public class StudentControllerTests {
     }
 
     @Test
-    public void shouldReturnMessageThatUserWasDeletedAndStatusOk() throws Exception {
+    public void shouldReturnMessageThatStudentWasDeletedAndStatusOk() throws Exception {
         Long id = anyLong();
 
         studentService.deleteStudentWithId(id);
