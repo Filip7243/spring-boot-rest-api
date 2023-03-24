@@ -41,8 +41,9 @@ public class Student {
         if (this.courses.size() <= 5 && course.getStudents().size() <= 50) {
             course.getStudents().add(this);
             this.courses.add(course);
+        } else {
+            throw new RuntimeException("Limits are reached!");
         }
-        throw new RuntimeException("Limits are reached!");
     }
 
     public void removeCourseFromStudent(Course course) {
