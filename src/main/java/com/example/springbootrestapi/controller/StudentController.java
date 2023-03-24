@@ -1,12 +1,15 @@
-package com.example.springbootrestapi;
+package com.example.springbootrestapi.controller;
 
 import com.example.springbootrestapi.dto.StudentDto;
 import com.example.springbootrestapi.service.CourseService;
 import com.example.springbootrestapi.service.StudentService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -21,13 +24,22 @@ public class StudentController {
         this.courseService = courseService;
     }
 
-    @GetMapping(value = "/", produces = "application/json")
+    @GetMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<List<StudentDto>> findAll() {
         return ResponseEntity.ok(studentService.findAllStudents());
     }
 
-    @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
-    public ResponseEntity<StudentDto> createUser(@RequestBody StudentDto studentDto) {
-        return new ResponseEntity<>(studentService.createStudent(studentDto), HttpStatus.CREATED);
+    @PostMapping(value = "/")
+    public ResponseEntity<?> createUser(@RequestBody StudentDto studentDto) {
+        StudentDto student = studentService.createStudent(studentDto);
+
+        try {
+            return ResponseEntity
+                    .created(new URI("/api/students/"))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body("CREATED");
+        } catch (URISyntaxException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
