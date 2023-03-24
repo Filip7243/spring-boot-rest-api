@@ -39,13 +39,16 @@ public class StudentServiceTests {
     @Test
     public void canUpdateStudentWithId() {
         Student student = new Student();
+        StudentDto updatedStudent = new StudentDto();
+        updatedStudent.setFirstName("test");
         Long anyId = anyLong();
 
         when(studentRepository.findById(anyId)).thenReturn(Optional.of(student));
 
-        studentService.updateStudentWithId(anyId, new StudentDto());
+        studentService.updateStudentWithId(anyId, updatedStudent);
 
         verify(studentRepository).save(student);
+        assertEquals("test", student.getFirstName());
     }
 
     @Test
