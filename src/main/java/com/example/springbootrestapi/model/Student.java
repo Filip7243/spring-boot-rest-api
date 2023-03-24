@@ -42,7 +42,7 @@ public class Student {
             course.getStudents().add(this);
             this.courses.add(course);
         }
-        throw new RuntimeException("Maximum number of courses reached!");
+        throw new RuntimeException("Limits are reached!");
     }
 
     public void removeCourseFromStudent(Course course) {

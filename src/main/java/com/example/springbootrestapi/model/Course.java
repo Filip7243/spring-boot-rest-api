@@ -22,11 +22,10 @@ public class Course {
     public Course() {
     }
 
-    public Course(String name, String description, Set<Student> students) {
+    public Course(String name, String description) {
         this.id = null;
         this.name = name;
-        this.description = description;
-        this.students = students;
+        this.description = description;;
     }
 
     public Long getId() {
