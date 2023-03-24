@@ -1,7 +1,9 @@
 package com.example.springbootrestapi.service;
 
 import com.example.springbootrestapi.dto.StudentDto;
+import com.example.springbootrestapi.model.Course;
 import com.example.springbootrestapi.model.Student;
+import com.example.springbootrestapi.repo.CourseRepository;
 import com.example.springbootrestapi.repo.StudentRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +13,12 @@ import java.util.List;
 public class StudentService {
 
     private final StudentRepository studentRepository;
+    private final CourseRepository courseRepository;
 
-    public StudentService(StudentRepository studentRepository) {
+    public StudentService(StudentRepository studentRepository,
+                          CourseRepository courseRepository) {
         this.studentRepository = studentRepository;
+        this.courseRepository = courseRepository;
     }
 
     public Student createStudent(StudentDto studentDto) {
@@ -35,15 +40,24 @@ public class StudentService {
     public void deleteStudentWithId(Long id) {
         Student foundStudent = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found!"));
 
-        studentRepository.deleteById(id);
+        studentRepository.delete(foundStudent);
     }
 
     public List<StudentDto> findAllStudents() {
         return mapToStudentDtoList((List<Student>) studentRepository.findAll());
     }
 
-    public List<StudentDto> findStudentsByCourses() {
-        return null;
+    public List<StudentDto> findStudentsByCourseId(Long id) {
+        Course foundCourse = courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course not found!"));
+        List<Student> studentsByCourse = studentRepository.findStudentsByCourse(foundCourse);
+
+        return mapToStudentDtoList(studentsByCourse);
+    }
+
+    public List<StudentDto> findStudentsWithoutCourses() {
+        List<Student> studentsWithoutAnyCourses = studentRepository.findStudentsWithoutAnyCourses();
+
+        return mapToStudentDtoList(studentsWithoutAnyCourses);
     }
 
     private static Student mapStudentDtoToStudent(StudentDto studentDto) {
