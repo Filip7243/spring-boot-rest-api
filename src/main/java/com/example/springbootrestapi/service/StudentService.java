@@ -2,6 +2,7 @@ package com.example.springbootrestapi.service;
 
 import com.example.springbootrestapi.dto.CourseDto;
 import com.example.springbootrestapi.dto.StudentDto;
+import com.example.springbootrestapi.exception.StudentNotFoundException;
 import com.example.springbootrestapi.model.Course;
 import com.example.springbootrestapi.model.Student;
 import com.example.springbootrestapi.repo.CourseRepository;
@@ -33,7 +34,7 @@ public class StudentService {
 
     public void updateStudentWithId(Long id, StudentDto updatedStudent) {
         Student foundStudent = studentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new StudentNotFoundException(id));
 
         foundStudent.setAlbumId(updatedStudent.getAlbumId());
         foundStudent.setFirstName(updatedStudent.getFirstName());
@@ -44,7 +45,7 @@ public class StudentService {
     }
 
     public void deleteStudentWithId(Long id) {
-        Student foundStudent = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found!"));
+        Student foundStudent = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException(id));
 
         studentRepository.delete(foundStudent);
     }
