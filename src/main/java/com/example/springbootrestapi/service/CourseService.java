@@ -1,6 +1,8 @@
 package com.example.springbootrestapi.service;
 
 import com.example.springbootrestapi.dto.CourseDto;
+import com.example.springbootrestapi.exception.CourseNotFoundException;
+import com.example.springbootrestapi.exception.StudentNotFoundException;
 import com.example.springbootrestapi.model.Course;
 import com.example.springbootrestapi.model.Student;
 import com.example.springbootrestapi.repo.CourseRepository;
@@ -31,7 +33,7 @@ public class CourseService {
     }
 
     public void updateCourseWithId(Long id, CourseDto updatedCourse) {
-        Course course = courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course not found!"));
+        Course course = courseRepository.findById(id).orElseThrow(() -> new CourseNotFoundException(id));
         course.setName(updatedCourse.getName());
         course.setDescription(updatedCourse.getDescription());
 
@@ -39,7 +41,7 @@ public class CourseService {
     }
 
     public void deleteCourseWithId(Long id) {
-        Course course = courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course not found!"));
+        Course course = courseRepository.findById(id).orElseThrow(() -> new CourseNotFoundException(id));
 
         courseRepository.delete(course);
     }
@@ -50,7 +52,7 @@ public class CourseService {
 
 
     public List<CourseDto> findCoursesByStudentId(Long id) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new RuntimeException("Student not found!"));
+        Student student = studentRepository.findById(id).orElseThrow(() -> new StudentNotFoundException(id));
 
         List<Course> coursesByStudent = courseRepository.findCoursesByStudent(student);
 

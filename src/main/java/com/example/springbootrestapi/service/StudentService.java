@@ -2,6 +2,7 @@ package com.example.springbootrestapi.service;
 
 import com.example.springbootrestapi.dto.CourseDto;
 import com.example.springbootrestapi.dto.StudentDto;
+import com.example.springbootrestapi.exception.CourseNotFoundException;
 import com.example.springbootrestapi.exception.StudentNotFoundException;
 import com.example.springbootrestapi.model.Course;
 import com.example.springbootrestapi.model.Student;
@@ -55,7 +56,7 @@ public class StudentService {
     }
 
     public List<StudentDto> findStudentsByCourseId(Long id) {
-        Course foundCourse = courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course not found!"));
+        Course foundCourse = courseRepository.findById(id).orElseThrow(() -> new CourseNotFoundException(id));
         List<Student> studentsByCourse = studentRepository.findStudentsByCoursesContaining(foundCourse);
 
         return mapToStudentDtoList(studentsByCourse);
