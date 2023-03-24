@@ -3,10 +3,9 @@ package com.example.springbootrestapi;
 import com.example.springbootrestapi.dto.StudentDto;
 import com.example.springbootrestapi.service.CourseService;
 import com.example.springbootrestapi.service.StudentService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,8 +21,13 @@ public class StudentController {
         this.courseService = courseService;
     }
 
-    @GetMapping(produces = "application/json")
+    @GetMapping(value = "/", produces = "application/json")
     public ResponseEntity<List<StudentDto>> findAll() {
         return ResponseEntity.ok(studentService.findAllStudents());
+    }
+
+    @PostMapping(value = "/", produces = "application/json", consumes = "application/json")
+    public ResponseEntity<StudentDto> createUser(@RequestBody StudentDto studentDto) {
+        return new ResponseEntity<>(studentService.createStudent(studentDto), HttpStatus.CREATED);
     }
 }
