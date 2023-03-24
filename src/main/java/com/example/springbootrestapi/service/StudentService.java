@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.example.springbootrestapi.mapper.StudentMapper.mapStudentDtoToStudent;
+import static com.example.springbootrestapi.mapper.StudentMapper.mapToStudentDtoList;
+
 @Service
 public class StudentService {
 
@@ -44,7 +47,7 @@ public class StudentService {
     }
 
     public List<StudentDto> findAllStudents() {
-        return mapToStudentDtoList((List<Student>) studentRepository.findAll());
+        return mapToStudentDtoList(studentRepository.findAll());
     }
 
     public List<StudentDto> findStudentsByCourseId(Long id) {
@@ -60,21 +63,4 @@ public class StudentService {
         return mapToStudentDtoList(studentsWithoutAnyCourses);
     }
 
-    private static Student mapStudentDtoToStudent(StudentDto studentDto) {
-        return new Student(studentDto.getAlbumId(), studentDto.getFirstName(), studentDto.getLastName(), studentDto.getEmail());
-    }
-
-    private static List<StudentDto> mapToStudentDtoList(List<Student> students) {
-        return students.stream().map(student -> mapStudentToStudentDto(student)).toList();
-    }
-
-    private static StudentDto mapStudentToStudentDto(Student student) {
-        StudentDto studentDto = new StudentDto();
-        studentDto.setAlbumId(student.getAlbumId());
-        studentDto.setFirstName(student.getFirstName());
-        studentDto.setLastName(student.getLastName());
-        studentDto.setEmail(student.getEmail());
-
-        return studentDto;
-    }
 }
