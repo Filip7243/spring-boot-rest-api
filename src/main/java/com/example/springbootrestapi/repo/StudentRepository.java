@@ -16,4 +16,5 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query(value = "SELECT * FROM Student s WHERE s.id NOT IN(SELECT student_id FROM students_courses)",
             nativeQuery = true)
     List<Student> findStudentsWithNoCoursesEnrolled();
+
 }

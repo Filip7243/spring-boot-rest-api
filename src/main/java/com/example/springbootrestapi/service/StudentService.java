@@ -38,6 +38,8 @@ public class StudentService {
         foundStudent.setFirstName(updatedStudent.getFirstName());
         foundStudent.setLastName(updatedStudent.getLastName());
         foundStudent.setEmail(updatedStudent.getEmail());
+
+        studentRepository.save(foundStudent);
     }
 
     public void deleteStudentWithId(Long id) {
