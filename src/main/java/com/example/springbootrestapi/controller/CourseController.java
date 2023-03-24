@@ -1,7 +1,6 @@
 package com.example.springbootrestapi.controller;
 
 import com.example.springbootrestapi.dto.CourseDto;
-import com.example.springbootrestapi.model.Course;
 import com.example.springbootrestapi.service.CourseService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,5 +37,21 @@ public class CourseController {
         } catch (URISyntaxException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<?> updateCourseWithId(@PathVariable("id") Long id, @RequestBody CourseDto courseDto) {
+        courseService.updateCourseWithId(id, courseDto);
+
+        return ResponseEntity
+                .ok("Course was successfully updated!");
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<?> deleteCourseWithId(@PathVariable("id") Long id) {
+        courseService.deleteCourseWithId(id);
+
+        return ResponseEntity
+                .ok("Course was successfully deleted!");
     }
 }
