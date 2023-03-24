@@ -17,11 +17,9 @@ import java.util.List;
 public class StudentController {
 
     private StudentService studentService;
-    private CourseService courseService;
 
-    public StudentController(StudentService studentService, CourseService courseService) {
+    public StudentController(StudentService studentService) {
         this.studentService = studentService;
-        this.courseService = courseService;
     }
 
     @GetMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE})
