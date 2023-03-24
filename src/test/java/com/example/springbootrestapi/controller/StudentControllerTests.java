@@ -4,6 +4,7 @@ import com.example.springbootrestapi.dto.StudentDto;
 import com.example.springbootrestapi.service.StudentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,15 +39,19 @@ public class StudentControllerTests {
     private StudentService studentService;
 
     private static final String API_PATH = "/api/student/";
+    private StudentDto student;
 
-    @Test
-    public void shouldReturnJSONWithListStudentDtoAndOkStatus() throws Exception {
-        StudentDto student = new StudentDto();
+    @BeforeEach
+    void setUp() {
+        student = new StudentDto();
         student.setAlbumId("00000");
         student.setFirstName("test");
         student.setLastName("test");
         student.setEmail("test");
+    }
 
+    @Test
+    public void shouldReturnJSONWithListStudentDtoAndOkStatus() throws Exception {
         when(studentService.findAllStudents()).thenReturn(List.of(student));
 
         mvc.perform(get(API_PATH))
@@ -69,12 +74,6 @@ public class StudentControllerTests {
 
     @Test
     public void shouldReturnStatusCreated() throws Exception {
-        StudentDto student = new StudentDto();
-        student.setAlbumId("00000");
-        student.setFirstName("test");
-        student.setLastName("test");
-        student.setEmail("test");
-
         when(studentService.createStudent(student)).thenReturn(student);
 
         mvc.perform(post(API_PATH)
@@ -87,11 +86,6 @@ public class StudentControllerTests {
 
     @Test
     public void shouldReturnMessageThatUserWasUpdatedAndStatusOk() throws Exception {
-        StudentDto student = new StudentDto();
-        student.setAlbumId("00000");
-        student.setFirstName("test");
-        student.setLastName("test");
-        student.setEmail("test");
         Long id = anyLong();
 
         studentService.updateStudentWithId(id, eq(student));
