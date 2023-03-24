@@ -22,7 +22,7 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @GetMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/")
     public ResponseEntity<List<StudentDto>> findAll() {
         return ResponseEntity.ok(studentService.findAllStudents());
     }
