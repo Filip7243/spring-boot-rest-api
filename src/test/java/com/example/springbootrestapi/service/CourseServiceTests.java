@@ -101,4 +101,15 @@ public class CourseServiceTests {
 
         assertEquals(studentCourses.size(), coursesByStudentId.size());
     }
+
+    @Test
+    public void canFindCoursesWithoutStudents() {
+        List<Course> any = List.of(new Course());
+
+        when(courseRepository.findCoursesWithoutStudents()).thenReturn(any);
+
+        List<CourseDto> coursesWithoutStudents = courseService.findCoursesWithoutStudents();
+
+        assertEquals(any.size(), coursesWithoutStudents.size());
+    }
 }
