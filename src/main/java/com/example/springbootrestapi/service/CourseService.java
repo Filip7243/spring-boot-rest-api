@@ -9,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+import static com.example.springbootrestapi.mapper.CourseMapper.mapToCourse;
+import static com.example.springbootrestapi.mapper.CourseMapper.mapToCourseDtoList;
+
 @Service
 public class CourseService {
 
@@ -58,20 +61,5 @@ public class CourseService {
         return mapToCourseDtoList(courseRepository.findCoursesWithoutStudents());
     }
 
-    private static Course mapToCourse(CourseDto courseDto) {
-        return new Course(courseDto.getName(), courseDto.getDescription());
-    }
 
-    private static List<CourseDto> mapToCourseDtoList(List<Course> courses) {
-        return courses.stream()
-                .map(course -> mapToCourseDto(course)).toList();
-    }
-
-    private static CourseDto mapToCourseDto(Course course) {
-        CourseDto courseDto = new CourseDto();
-        courseDto.setName(course.getName());
-        courseDto.setDescription(course.getDescription());
-
-        return courseDto;
-    }
 }
