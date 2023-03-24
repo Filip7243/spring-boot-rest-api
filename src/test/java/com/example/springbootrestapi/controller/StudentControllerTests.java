@@ -5,6 +5,7 @@ import com.example.springbootrestapi.service.StudentService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,9 +20,11 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -65,7 +68,7 @@ public class StudentControllerTests {
     }
 
     @Test
-    public void shouldReturnJsonWithCreatedUserAndStatusCreated() throws Exception {
+    public void shouldStatusCreated() throws Exception {
         StudentDto student = new StudentDto();
         student.setAlbumId("00000");
         student.setFirstName("test");
@@ -80,5 +83,22 @@ public class StudentControllerTests {
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
+    }
+
+    @Test
+    public void shouldReturnMessageThatUserWasUpdatedAnd() throws Exception {
+        StudentDto student = new StudentDto();
+        student.setAlbumId("00000");
+        student.setFirstName("test");
+        student.setLastName("test");
+        student.setEmail("test");
+        Long id = anyLong();
+
+        studentService.updateStudentWithId(id, eq(student));
+
+        mvc.perform(put(API_PATH + "/{id}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(new ObjectMapper().writeValueAsString(student)))
+                .andExpect(status().isOk());
     }
 }
