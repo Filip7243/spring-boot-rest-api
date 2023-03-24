@@ -11,8 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.springbootrestapi.mapper.CourseMapper.mapToCourse;
-import static com.example.springbootrestapi.mapper.CourseMapper.mapToCourseDtoList;
+import static com.example.springbootrestapi.mapper.CourseMapper.*;
 
 @Service
 public class CourseService {
@@ -26,10 +25,10 @@ public class CourseService {
         this.studentRepository = studentRepository;
     }
 
-    public Course createCourse(CourseDto courseDto) {
+    public CourseDto createCourse(CourseDto courseDto) {
         Course course = mapToCourse(courseDto);
 
-        return courseRepository.save(course);
+        return mapToCourseDto(courseRepository.save(course));
     }
 
     public void updateCourseWithId(Long id, CourseDto updatedCourse) {
