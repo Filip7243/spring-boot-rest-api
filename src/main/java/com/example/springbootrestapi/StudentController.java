@@ -22,7 +22,7 @@ public class StudentController {
         this.courseService = courseService;
     }
 
-    @GetMapping
+    @GetMapping(produces = "application/json")
     public ResponseEntity<List<StudentDto>> findAll() {
         return ResponseEntity.ok(studentService.findAllStudents());
     }
