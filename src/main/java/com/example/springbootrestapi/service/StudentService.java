@@ -49,13 +49,13 @@ public class StudentService {
 
     public List<StudentDto> findStudentsByCourseId(Long id) {
         Course foundCourse = courseRepository.findById(id).orElseThrow(() -> new RuntimeException("Course not found!"));
-        List<Student> studentsByCourse = studentRepository.findStudentsByCourse(foundCourse);
+        List<Student> studentsByCourse = studentRepository.findStudentsByCoursesContaining(foundCourse);
 
         return mapToStudentDtoList(studentsByCourse);
     }
 
     public List<StudentDto> findStudentsWithoutCourses() {
-        List<Student> studentsWithoutAnyCourses = studentRepository.findStudentsWithoutAnyCourses();
+        List<Student> studentsWithoutAnyCourses = studentRepository.findStudentsWithNoCoursesEnrolled();
 
         return mapToStudentDtoList(studentsWithoutAnyCourses);
     }
