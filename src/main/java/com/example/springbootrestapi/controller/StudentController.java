@@ -33,7 +33,7 @@ public class StudentController {
 
         try {
             return ResponseEntity
-                    .created(new URI("/api/students/"))
+                    .created(new URI("/api/student/"))
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(student);
         } catch (URISyntaxException e) {
