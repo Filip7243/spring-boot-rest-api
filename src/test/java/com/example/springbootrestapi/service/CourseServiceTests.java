@@ -60,7 +60,7 @@ public class CourseServiceTests {
         RuntimeException ex =
                 assertThrows(RuntimeException.class, () -> courseService.updateCourseWithId(anyId, new CourseDto()));
 
-        assertEquals("Course not found!", ex.getMessage());
+        assertEquals("Course with id: " + anyId + " not found!", ex.getMessage());
     }
 
     @Test
@@ -84,7 +84,7 @@ public class CourseServiceTests {
         RuntimeException ex =
                 assertThrows(RuntimeException.class, () -> courseService.deleteCourseWithId(anyId));
 
-        assertEquals("Course not found!", ex.getMessage());
+        assertEquals("Course with id: " + anyId + " not found!", ex.getMessage());
     }
 
     @Test

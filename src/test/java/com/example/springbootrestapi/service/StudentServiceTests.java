@@ -61,7 +61,7 @@ public class StudentServiceTests {
         RuntimeException ex =
                 assertThrows(RuntimeException.class, () -> studentService.updateStudentWithId(anyId, student));
 
-        assertEquals("Student not found", ex.getMessage());
+        assertEquals("Student with id: " + anyId + "not found!", ex.getMessage());
     }
 
     @Test
@@ -85,7 +85,7 @@ public class StudentServiceTests {
         RuntimeException ex =
                 assertThrows(RuntimeException.class, () -> studentService.deleteStudentWithId(anyId));
 
-        assertEquals("Student not found!", ex.getMessage());
+        assertEquals("Student with id: " + anyId + "not found!", ex.getMessage());
     }
 
     @Test
@@ -111,7 +111,7 @@ public class StudentServiceTests {
         RuntimeException ex =
                 assertThrows(RuntimeException.class, () -> studentService.findStudentsByCourseId(anyId));
 
-        assertEquals("Course not found!", ex.getMessage());
+        assertEquals("Course with id: " + anyId + " not found!", ex.getMessage());
     }
 
     @Test
