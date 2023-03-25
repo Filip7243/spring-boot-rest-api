@@ -110,6 +110,7 @@ public class StudentControllerTests {
         when(studentService.findStudentsByCourseId(1L)).thenReturn(List.of(student));
 
         mvc.perform(get("/api/student?courseId=1"))
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1)));
     }
@@ -119,6 +120,7 @@ public class StudentControllerTests {
         when(studentService.findStudentsWithoutCourses()).thenReturn(List.of(student));
 
         mvc.perform(get("/api/student/without-courses"))
+                .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$", hasSize(1)));
     }
