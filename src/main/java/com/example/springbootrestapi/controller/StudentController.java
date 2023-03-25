@@ -1,6 +1,8 @@
 package com.example.springbootrestapi.controller;
 
 import com.example.springbootrestapi.dto.StudentDto;
+import com.example.springbootrestapi.model.Course;
+import com.example.springbootrestapi.model.Student;
 import com.example.springbootrestapi.service.CourseService;
 import com.example.springbootrestapi.service.StudentService;
 import org.springframework.http.HttpStatus;
@@ -17,9 +19,12 @@ import java.util.List;
 public class StudentController {
 
     private StudentService studentService;
+    private CourseService courseService;
 
-    public StudentController(StudentService studentService) {
+    public StudentController(StudentService studentService,
+                             CourseService courseService) {
         this.studentService = studentService;
+        this.courseService = courseService;
     }
 
     @GetMapping(value = "/")
@@ -56,4 +61,21 @@ public class StudentController {
         return ResponseEntity
                 .ok("Student was successfully deleted!");
     }
+
+    //TODO: register to course
+    @PostMapping("/enroll/{courseId}")
+    public ResponseEntity<?> enrollCourse(@PathVariable("courseId") Long courseId, @RequestBody StudentDto student) {
+        Course foundCourse = courseService.findCourseById(courseId);
+        Student foundStudent = studentService.findStudentByAlbumId(student.getAlbumId());
+        foundStudent.addCourseToStudent(foundCourse);
+
+        try {
+            return ResponseEntity.created(new URI("/api/student/"))
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(student);
+        } catch (URISyntaxException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 }
