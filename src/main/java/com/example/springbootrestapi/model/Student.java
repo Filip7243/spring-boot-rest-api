@@ -1,5 +1,6 @@
 package com.example.springbootrestapi.model;
 
+import com.example.springbootrestapi.exception.LimitsReachedException;
 import jakarta.persistence.*;
 import org.springframework.data.jpa.repository.Modifying;
 
@@ -40,11 +41,12 @@ public class Student {
     }
 
     public void addCourseToStudent(Course course) {
-        if (this.courses.size() <= 5 && course.getStudents().size() <= 50) {
+        System.out.println(this.courses.size());
+        if (this.courses.size() < 5 && course.getStudents().size() < 50) {
             this.courses.add(course);
             course.getStudents().add(this);
         } else {
-            throw new RuntimeException("Limits are reached!");
+            throw new LimitsReachedException();
         }
     }
 
