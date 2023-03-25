@@ -1,6 +1,7 @@
 package com.example.springbootrestapi.model;
 
 import jakarta.persistence.*;
+import org.springframework.data.jpa.repository.Modifying;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -40,16 +41,16 @@ public class Student {
 
     public void addCourseToStudent(Course course) {
         if (this.courses.size() <= 5 && course.getStudents().size() <= 50) {
-            course.getStudents().add(this);
             this.courses.add(course);
+            course.getStudents().add(this);
         } else {
             throw new RuntimeException("Limits are reached!");
         }
     }
 
     public void removeCourseFromStudent(Course course) {
-        course.getStudents().remove(this);
         this.courses.remove(course);
+        course.getStudents().remove(this);
     }
 
     public Long getId() {
