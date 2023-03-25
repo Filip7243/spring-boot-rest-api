@@ -5,6 +5,7 @@ import com.example.springbootrestapi.model.Course;
 import com.example.springbootrestapi.model.Student;
 import com.example.springbootrestapi.service.CourseService;
 import com.example.springbootrestapi.service.StudentService;
+import jakarta.persistence.EntityManager;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -67,9 +68,15 @@ public class StudentController {
     public ResponseEntity<?> enrollCourse(@PathVariable("courseId") Long courseId, @RequestBody StudentDto student) {
         Course foundCourse = courseService.findCourseById(courseId);
         Student foundStudent = studentService.findStudentByAlbumId(student.getAlbumId());
-        foundStudent.addCourseToStudent(foundCourse);
+        int sizeBeforeAdding = foundStudent.getCourses().size();
+
+        studentService.addStudentToCourse(foundCourse, foundStudent);
 
         try {
+            if (sizeBeforeAdding == foundStudent.getCourses().size()) {
+                return ResponseEntity.status(409).body("User already in course");
+            }
+
             return ResponseEntity.created(new URI("/api/student/"))
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(student);
