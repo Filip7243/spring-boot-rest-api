@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/course")
@@ -53,5 +54,18 @@ public class CourseController {
 
         return ResponseEntity
                 .ok("Course was successfully deleted!");
+    }
+
+    @GetMapping()
+    public ResponseEntity<?> findCoursesWithStudent(@RequestParam("studentId") Long id) {
+        System.out.println(id);
+        List<CourseDto> courses = courseService.findCoursesByStudentId(id);
+
+        return ResponseEntity.ok(courses);
+    }
+
+    @GetMapping("/without-students")
+    public ResponseEntity<?> findCoursesWithoutStudents() {
+        return ResponseEntity.ok(courseService.findCoursesWithoutStudents());
     }
 }
