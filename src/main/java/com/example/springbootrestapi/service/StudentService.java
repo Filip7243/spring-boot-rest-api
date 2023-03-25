@@ -11,6 +11,7 @@ import com.example.springbootrestapi.repo.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import static com.example.springbootrestapi.mapper.StudentMapper.*;
 
@@ -26,10 +27,20 @@ public class StudentService {
         this.courseRepository = courseRepository;
     }
 
+    public Student findStudentByAlbumId(String albumId) {
+        return studentRepository.findStudentByAlbumId(albumId)
+                .orElseThrow(() -> new StudentNotFoundException(null));
+    }
     public StudentDto createStudent(StudentDto studentDto) {
-        Student student = mapStudentDtoToStudent(studentDto);
+        Optional<Student> foundStudent = studentRepository.findStudentByAlbumId(studentDto.getAlbumId());
+        if (foundStudent.isEmpty()) {
+            Student student = mapStudentDtoToStudent(studentDto);
 
-        return mapStudentToStudentDto(studentRepository.save(student));
+            Student created = studentRepository.save(student);
+            return mapStudentToStudentDto(created);
+        } else {
+            throw new RuntimeException("User already exists!");
+        }
     }
 
     public void updateStudentWithId(Long id, StudentDto updatedStudent) {
