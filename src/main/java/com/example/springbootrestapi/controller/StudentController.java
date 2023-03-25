@@ -5,8 +5,6 @@ import com.example.springbootrestapi.model.Course;
 import com.example.springbootrestapi.model.Student;
 import com.example.springbootrestapi.service.CourseService;
 import com.example.springbootrestapi.service.StudentService;
-import jakarta.persistence.EntityManager;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -87,7 +85,7 @@ public class StudentController {
     }
 
     @GetMapping()
-    public ResponseEntity<?> findStudentsWithCourse(@Param("courseId") Long courseId) {
+    public ResponseEntity<?> findStudentsWithCourse(@RequestParam("courseId") Long courseId) {
         List<StudentDto> studentsByCourseId = studentService.findStudentsByCourseId(courseId);
 
         return ResponseEntity.ok(studentsByCourseId);
