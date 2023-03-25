@@ -16,7 +16,6 @@ public class Student {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Long id;
-    @Column(unique = true)
     private String albumId;
     private String firstName;
     private String lastName;
