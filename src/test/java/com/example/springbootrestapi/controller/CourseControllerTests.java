@@ -87,4 +87,24 @@ public class CourseControllerTests {
         mvc.perform(delete(API_PATH + "/{id}", 1L))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    public void shouldReturnJSONWithStudentWithCoursesEnrolledAndStatusOk() throws Exception {
+        when(courseService.findCoursesByStudentId(1L)).thenReturn(List.of(course));
+
+        mvc.perform(get("/api/course?studentId=1"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    public void shouldReturnJSONWithStudentWithoutCoursesAndStatusOk() throws Exception {
+        when(courseService.findCoursesWithoutStudents()).thenReturn(List.of(course));
+
+        mvc.perform(get("/api/course/without-students"))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
 }
