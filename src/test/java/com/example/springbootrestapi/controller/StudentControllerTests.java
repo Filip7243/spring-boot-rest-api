@@ -21,8 +21,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -104,5 +103,23 @@ public class StudentControllerTests {
 
         mvc.perform(delete(API_PATH + "/{id}", 1L))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldReturnJSONWithStudentWithCoursesEnrolledAndStatusOk() throws Exception {
+        when(studentService.findStudentsByCourseId(1L)).thenReturn(List.of(student));
+
+        mvc.perform(get("/api/student?courseId=1"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(1)));
+    }
+
+    @Test
+    public void shouldReturnJSONWithStudentWithoutCoursesAndStatusOk() throws Exception {
+        when(studentService.findStudentsWithoutCourses()).thenReturn(List.of(student));
+
+        mvc.perform(get("/api/student/without-courses"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 }
