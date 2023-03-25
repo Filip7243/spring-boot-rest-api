@@ -4,11 +4,13 @@ import com.example.springbootrestapi.dto.CourseDto;
 import com.example.springbootrestapi.dto.StudentDto;
 import com.example.springbootrestapi.exception.CourseNotFoundException;
 import com.example.springbootrestapi.exception.StudentNotFoundException;
+import com.example.springbootrestapi.exception.UserAlreadyExistsException;
 import com.example.springbootrestapi.model.Course;
 import com.example.springbootrestapi.model.Student;
 import com.example.springbootrestapi.repo.CourseRepository;
 import com.example.springbootrestapi.repo.StudentRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +41,7 @@ public class StudentService {
             Student created = studentRepository.save(student);
             return mapStudentToStudentDto(created);
         } else {
-            throw new RuntimeException("User already exists!");
+            throw new UserAlreadyExistsException(studentDto.getAlbumId());
         }
     }
 
@@ -78,5 +80,10 @@ public class StudentService {
         return mapToStudentDtoList(studentsWithoutAnyCourses);
     }
 
+    public void addStudentToCourse(Course course, Student student) {
+        student.addCourseToStudent(course);
 
+        studentRepository.save(student);
+        courseRepository.save(course);
+    }
 }
