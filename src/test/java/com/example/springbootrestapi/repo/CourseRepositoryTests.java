@@ -2,6 +2,7 @@ package com.example.springbootrestapi.repo;
 
 import com.example.springbootrestapi.model.Course;
 import com.example.springbootrestapi.model.Student;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,22 @@ public class CourseRepositoryTests {
         s2.addCourseToStudent(c1);
     }
 
+    @AfterEach
+    void teardown() {
+        s1.getCourses().clear();
+        s3.getCourses().clear();
+        s2.getCourses().clear();
+        c1.getStudents().clear();
+        c2.getStudents().clear();
+        c3.getStudents().clear();
+        c4.getStudents().clear();
+        studentRepository.deleteAll();
+        courseRepository.deleteAll();
+
+        studentRepository.findAll().forEach(System.out::println);
+        courseRepository.findAll().forEach(System.out::println);
+    }
+
     @Test
     public void itShouldFindCoursesThatSpecificStudentEnrolled() {
         List<Course> foundCourses = courseRepository.findCoursesByStudent(s1);
@@ -79,6 +96,7 @@ public class CourseRepositoryTests {
     @Test
     public void itShouldFindCourseWithoutStudentsEnrolled() {
         List<Course> foundCourses = courseRepository.findCoursesWithoutStudents();
+        foundCourses.forEach(course -> System.out.println(course.getId()));
 
         makeSureThatListHasSizeOf(foundCourses, 1);
     }

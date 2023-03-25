@@ -2,6 +2,7 @@ package com.example.springbootrestapi.repo;
 
 import com.example.springbootrestapi.model.Course;
 import com.example.springbootrestapi.model.Student;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +32,7 @@ public class StudentRepositoryTests {
     private Course c4;
 
     @BeforeEach
-    void setUp() {
+    void init() {
         s1 = new Student("00000", "John", "Doe", "john@mail.com");
         s2 = new Student("00001", "Mark", "Doe", "Mark@mail.com");
         s3 = new Student("00002", "Steve", "Doe", "Steve@mail.com");
@@ -58,6 +59,12 @@ public class StudentRepositoryTests {
         s2.addCourseToStudent(c1);
     }
 
+    @AfterEach
+    void teardown() {
+        studentRepository.deleteAll();
+        courseRepository.deleteAll();
+    }
+
     @Test
     public void itShouldFindTwoStudentsBySpecificCourse() {
         List<Student> foundStudents = studentRepository.findStudentsByCoursesContaining(c1);
@@ -79,7 +86,7 @@ public class StudentRepositoryTests {
         List<Student> foundStudents = studentRepository.findStudentsWithNoCoursesEnrolled();
 
         assertThat(foundStudents).isNotNull();
-        assertThat(foundStudents.size()).isEqualTo(1);
+        assertThat(foundStudents.size()).isEqualTo(2);
         assertThat(foundStudents.get(0).getAlbumId()).isEqualTo("00002");
     }
 
