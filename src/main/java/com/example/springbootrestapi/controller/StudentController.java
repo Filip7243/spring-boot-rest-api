@@ -6,6 +6,7 @@ import com.example.springbootrestapi.model.Student;
 import com.example.springbootrestapi.service.CourseService;
 import com.example.springbootrestapi.service.StudentService;
 import jakarta.persistence.EntityManager;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -83,6 +84,18 @@ public class StudentController {
         } catch (URISyntaxException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+    }
+
+    @GetMapping()
+    public ResponseEntity<?> findStudentsWithCourse(@Param("courseId") Long courseId) {
+        List<StudentDto> studentsByCourseId = studentService.findStudentsByCourseId(courseId);
+
+        return ResponseEntity.ok(studentsByCourseId);
+    }
+
+    @GetMapping("/without-courses")
+    public ResponseEntity<?> findStudentsWithoutCourses() {
+        return ResponseEntity.ok(studentService.findStudentsWithoutCourses());
     }
 
 }
