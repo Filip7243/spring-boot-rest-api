@@ -25,6 +25,11 @@ public class CourseService {
         this.studentRepository = studentRepository;
     }
 
+    public Course findCourseById(Long id) {
+        return courseRepository.findById(id)
+                .orElseThrow(() -> new CourseNotFoundException(id));
+    }
+
     public CourseDto createCourse(CourseDto courseDto) {
         Course course = mapToCourse(courseDto);
 
